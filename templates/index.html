@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dice Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎲 Dice Game</h1>
+
+      <div class="inputs">
+        <input type="text" id="player1" placeholder="Player 1" value="Player 1" />
+        <input type="text" id="player2" placeholder="Player 2" value="Player 2" />
+      </div>
+
+      <button onclick="playGame()">Roll Dice</button>
+      <button id="clearBtn">Clear Game History</button>
+
+      <div id="dice-display" class="dice-display">
+        <div class="player-box">
+          <p id="player1-name">Player 1</p>
+          <img id="dice1-img" src="{{ url_for('static', filename='images/dice1.png') }}" height="100px" />
+        </div>
+        <div class="player-box">
+          <p id="player2-name">Player 2</p>
+          <img id="dice2-img" src="{{ url_for('static', filename='images/dice1.png') }}" height="100px" />
+        </div>
+      </div>
+
+      <div id="result" class="result-text"></div>
+    </div>
+
+    <script>
+      // Move clearBtn listener OUTSIDE playGame
+      document.getElementById("clearBtn").addEventListener("click", function () {
+        fetch("/clear", {
+          method: "POST",
+        })
+          .then((res) => res.json())
+          .then((data) => alert(data.message))
+          .catch((err) => alert("Error: " + err));
+      });
+
+      function playGame() {
+        const player1 = document.getElementById("player1").value || "Player 1";
+        const player2 = document.getElementById("player2").value || "Player 2";
+
+        document.getElementById("player1-name").innerText = player1;
+        document.getElementById("player2-name").innerText = player2;
+
+        const dice1El = document.getElementById("dice1-img");
+        const dice2El = document.getElementById("dice2-img");
+
+        let rollCount = 0;
+        const interval = setInterval(() => {
+          const temp1 = Math.floor(Math.random() * 6) + 1;
+          const temp2 = Math.floor(Math.random() * 6) + 1;
+          dice1El.src = `/static/images/dice${temp1}.png`;
+          dice2El.src = `/static/images/dice${temp2}.png`;
+          rollCount++;
+          if (rollCount >= 10) {
+            clearInterval(interval);
+
+            const dice1 = temp1;
+            const dice2 = temp2;
+
+            let winner = "It's a Draw!";
+            if (dice1 > dice2) winner = `${player1} Wins!`;
+            else if (dice2 > dice1) winner = `${player2} Wins!`;
+
+            fetch("/api/games", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ player1, dice1, player2, dice2, winner }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                document.getElementById("result").innerHTML = `
+                  <div><strong>${winner}</strong></div>
+                  <div class="success">${data.message}</div>
+                `;
+              })
+              .catch(() => {
+                document.getElementById("result").innerHTML = `<span class="error">Error saving game!</span>`;
+              });
+          }
+        }, 100);
+      }
+    </script>
+  </body>
+</html>

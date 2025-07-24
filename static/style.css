@@ -1,0 +1,103 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #ffffff;
+  padding: 2rem 3rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+}
+
+h1 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.inputs input[type="text"] {
+  width: 47%;
+  margin: 0.5rem 1%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+.dice-display {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2rem;
+  align-items: center;
+}
+
+.player-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-box img {
+  width: 90px;
+  height: 90px;
+  transition: transform 0.2s ease;
+}
+
+.result-text {
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.success {
+  margin-top: 0.5rem;
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+#clearBtn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#clearBtn:hover {
+  background: #e74c3c;
+}
